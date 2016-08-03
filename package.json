@@ -1,0 +1,26 @@
+{
+    "name": "pip-webui-data",
+    "version": "1.1.0",
+    "author": "Digital Living Software Corp. <www.digitallivingsoftware.com>",
+    "description": "Data services for Pip.WebUI",
+    "contributors": [
+        {
+            "name": "Sergey Seroukhov",
+            "email": "seroukhov@gmail.com"
+        }
+    ],
+    "keywords": [
+        "pip",
+        "webui",
+        "framework",
+        "data",
+        "services"
+    ],
+    "noAnalyze": true,
+    "license": "MIT",
+    "private": false,
+    "dependencies": {},
+    "devDependencies": {
+        "pip-webui-tasks": "git+https://github.com/pip-webui/pip-webui-tasks.git"
+    }
+}

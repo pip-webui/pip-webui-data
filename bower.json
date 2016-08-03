@@ -1,0 +1,33 @@
+{
+  "name": "pip-webui-data",
+  "version": "1.0.0",
+  "description": "Data services for Pip.WebUI",
+  "main": "",
+  "authors": [
+      {
+          "name": "Sergey Seroukhov",
+          "email": "seroukhov@gmail.com"
+      }
+  ],
+  "license": "MIT",
+  "keywords": [
+    "pip",
+    "webui",
+    "framework",
+    "data",
+    "services"
+  ],
+  "homepage": "https://github.com/pip-webui/pip-webui-data",
+  "ignore": [
+    ".gitignore",
+    "node_modules",
+    "bower_components",
+    "src",
+    "tests",
+    "samples",
+    "scripts",
+    "build.*",
+    "gulpfile.js",
+    "karma.conf.js"
+  ]
+}
