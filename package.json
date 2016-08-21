@@ -1,6 +1,6 @@
 {
     "name": "pip-webui-data",
-    "version": "1.1.0",
+    "version": "1.0.2",
     "author": "Digital Living Software Corp. <www.digitallivingsoftware.com>",
     "description": "Data services for Pip.WebUI",
     "contributors": [
