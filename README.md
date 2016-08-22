@@ -2,25 +2,28 @@
 
 ![](https://img.shields.io/badge/license-MIT-blue.svg)
 
-On order to provide rich patterns for Line-of-Business application Pip.WebUI framework have to rely on server-side functionality. This Pip.WebUI.Rest module is our first (and quite loosy) attempt to define REST API, that connected controls rely on.
+On order to provide rich patterns for Line-of-Business application Pip.WebUI framework have to rely on server-side functionality. This Pip.WebUI. 
+Rest module is our first (and quite loosy) attempt to define REST API, that connected controls rely on.
 
-We understand, that demanding from framework users to implement specific REST API is not a good approach. So, in the next version, we'll address that issue and will implement an abstraction layer, that will let our users to plug their own data models.
+We understand, that demanding from framework users to implement specific REST API is not a good approach. 
+So, in the next version, we'll address that issue and will implement an abstraction layer, that will let our users to plug their own data models.
 
 * Angular Resources to call REST API
 * Session management
 * Secure application routing
 * Data models and local cache
 
-For more information please, visit [User's guide](https://github.com/pip-webui/pip-webui-controls/blob/master/doc/UsersGuide.md) and [REST protocol](https://github.com/pip-webui/pip-webui-controls/blob/master/doc/RestProtocol.md)
+For more information please, visit [User's guide](https://github.com/pip-webui/pip-webui-data/blob/master/doc/UsersGuide.md) 
+and [REST protocol](https://github.com/pip-webui/pip-webui-data/blob/master/doc/RestProtocol.md)
 
 ## Learn more about the module
 
-- [User's guide](https://github.com/pip-webui/pip-webui-controls/blob/master/doc/UsersGuide.md)
-- [REST protocol](https://github.com/pip-webui/pip-webui-controls/blob/master/doc/RestProtocol.md)
+- [User's guide](https://github.com/pip-webui/pip-webui-data/blob/master/doc/UsersGuide.md)
+- [REST protocol](https://github.com/pip-webui/pip-webui-data/blob/master/doc/RestProtocol.md)
 - [Online samples](http://webui.pipdevs.com/pip-webui-rest/index.html)
 - [API reference](http://webui-api.pipdevs.com/pip-webui-rest/index.html)
-- [Developer's guide](https://github.com/pip-webui/pip-webui-controls/blob/master/doc/DevelopersGuide.md)
-- [Changelog](https://github.com/pip-webui/pip-webui-controls/blob/master/CHANGELOG.md)
+- [Developer's guide](https://github.com/pip-webui/pip-webui-data/blob/master/doc/DevelopersGuide.md)
+- [Changelog](https://github.com/pip-webui/pip-webui-data/blob/master/CHANGELOG.md)
 - [Pip.WebUI project website](http://www.pipwebui.org)
 - [Pip.WebUI project wiki](https://github.com/pip-webui/pip-webui/wiki)
 - [Pip.WebUI discussion forum](https://groups.google.com/forum/#!forum/pip-webui)
