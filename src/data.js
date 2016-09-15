@@ -9,11 +9,13 @@
     angular.module('pipData', [
         'pipDataConfig',
         'pipDataDocument',
+        'pipDataAvatar',
+        'pipDataPicture',
         'pipDataUser',
         'pipDataParty',
         'pipDataSession',
 
-        'pipUsersData',
+        'pipDataUser',
         'pipDataSettings',
 
         'pipCacheTag',

@@ -9,11 +9,13 @@
     angular.module('pipData', [
         'pipDataConfig',
         'pipDataDocument',
+        'pipDataAvatar',
+        'pipDataPicture',
         'pipDataUser',
         'pipDataParty',
         'pipDataSession',
 
-        'pipUsersData',
+        'pipDataUser',
         'pipDataSettings',
 
         'pipCacheTag',
@@ -508,6 +510,191 @@
     });
 
 })();
+/**
+ * @file PipData Avatar API
+ * @copyright Digital Living Software Corp. 2014-2016
+ */
+
+(function () {
+    'use strict';
+
+    var thisModule = angular.module('pipDataAvatar', ['pipDataConfig', 'pipDataSession', 'angularFileUpload']);
+
+    thisModule.provider('pipDataAvatar', function () {
+
+        this.$get = ['$http', '$upload', 'pipDataConfig', 'pipDataSession', 'pipStrings', function ($http, $upload, pipDataConfig, pipDataSession, pipStrings) {
+
+            var
+                colorClasses = [
+                    'pip-avatar-color-0', 'pip-avatar-color-1', 'pip-avatar-color-2', 'pip-avatar-color-3',
+                    'pip-avatar-color-4', 'pip-avatar-color-5', 'pip-avatar-color-6', 'pip-avatar-color-7',
+                    'pip-avatar-color-8', 'pip-avatar-color-9', 'pip-avatar-color-10', 'pip-avatar-color-11',
+                    'pip-avatar-color-12', 'pip-avatar-color-13', 'pip-avatar-color-14', 'pip-avatar-color-15'
+                ],
+
+                colors = [
+                    'rgba(239,83,80,1)', 'rgba(236,64,122,1)', 'rgba(171,71,188,1)',
+                    'rgba(126,87,194,1)', 'rgba(92,107,192,1)', 'rgba(3,169,244,1)',
+                    'rgba(0,188,212,1)', 'rgba(0,150,136,1)', 'rgba(76,175,80,1)',
+                    'rgba(139,195,74,1)', 'rgba(205,220,57,1)', 'rgba(255,193,7,1)',
+                    'rgba(255,152,0,1)', 'rgba(255,87,34,1)', 'rgba(121,85,72,1)',
+                    'rgba(96,125,139,1)'
+                ],
+
+                entityTypes = {
+                    goal: 'goals',
+                    objective: 'goals',
+                    dream: 'goals',
+                    accomplishment: 'goals',
+                    area: 'areas',
+                    overall: 'visions',
+                    vision: 'visions',
+                    event: 'events',
+                    instance: 'events'
+                };
+
+            function fromServerFormat (avatar) {
+                    return avatar;
+                    // return {
+                    // id: avatar.id
+                    // name: avatar.name,
+                    // content_type: avatar.content_type,
+                    // length: avatar.length,
+                    // creator_id: avatar.creator_id,
+                    // created: avatar.created,
+                    // refs: avatar.refs,
+                    // url: avatar.url                  
+                    // }
+            }
+
+            function fromServerError(error) {
+                    // TODO: add mapping for demonstration of fields
+                    return error;
+            }
+
+            function getUrl(params) {
+                var serverUrl = pipDataConfig.serverUrl(),
+                    url;
+                    
+                    if (params.type && params.id && params.partyId && (entityTypes[params.type] == 'goals' || entityTypes[params.type] == 'areas' )) {
+                        url = serverUrl + '/api/parties/' + params.partyId + '/' + entityTypes[params.type]
+                                + '/' + params.id + '/avatar';
+                    } else {
+                        url = serverUrl + '/api/parties/' + params.partyId + '/avatar';
+                    }
+
+                    return url;
+            }
+
+            return {
+                getEntityTypes: function getEntityTypes() {
+                    return entityTypes;
+                },
+
+                getColorClasses: function getColorClasses() {
+                    return colorClasses;
+                },
+
+                getAvatarColors: function getAvatarColors() {
+                    return colors;
+                },
+
+                getAvatarUrl: function(params) {
+                    var
+                        timestamp = Math.floor(new Date().getTime() / 1000) * 1000,
+                        colorClassIndex = pipStrings.hashCode(params.id) % colors.length,
+                        chr = null,
+                        url = null, 
+                        default_template = '',
+
+                        noRedirect = params.noRedirect && params.noRedirect === true ? '&no_redirect=true' : '';
+
+                    if ((params.type && params.id && params.partyId) || (params.partyId)) {
+                        if (params.type && params.id && params.partyId) {
+                            if (params.type == 'category') return '';
+                            if (!params.noDefault) {
+                                default_template = 'default_template=' + params.type + '&bg=' + colors[colorClassIndex] + '&fg=white&';
+                            }
+                            if (entityTypes[params.type] == 'goals' || entityTypes[params.type] == 'areas' ) {
+                                url = getUrl(params) + '?' + default_template + 'timestamp=' + timestamp
+                                    + '&obj_id=' + params.id + noRedirect;
+                            }
+                        } else if (params.partyId && params.partyName) {
+                            colorClassIndex = pipStrings.hashCode(params.partyId) % colors.length;
+                            chr = (params.partyName[0] || '?').toUpperCase();
+                            if (!params.noDefault) {
+                                default_template = 'default_template=letter&bg=' + colors[colorClassIndex] + '&fg=white&chr=' + chr + '&';
+                            }
+                            url = getUrl(params) + '?' + default_template + 'timestamp=' + timestamp + '&obj_id=' + params.partyId + noRedirect;
+                        } else if (params.partyId && (!params.type && !params.id)) {
+                            url = getUrl(params) + '?timestamp=' + timestamp + '&obj_id=' + params.partyId + noRedirect;
+                        }
+                    }
+
+                    return url;                    
+                },
+
+                getAvatarPostUrl: function(params, filter) {
+                    var serverUrl = pipDataConfig.serverUrl(),
+                        FILE_URL;  
+
+                    if (params.entityType && params.id && params.partyId) {
+                        FILE_URL = serverUrl + '/api/parties/' + params.partyId + '/'
+                            + entityTypes[params.entityType] + '/' + params.id + '/avatar';
+                    } else {
+                        if (params.partyId && !params.entityType) {
+                            if (params.entityType || params.id)
+                                return '';
+                            FILE_URL = serverUrl + '/api/parties/' + params.partyId
+                                + '/avatar';
+                        }
+                    }
+
+                    return FILE_URL + '?name=' + filter;                    
+                },
+
+                deleteAvatar: function(params, successCallback, errorCallback) {
+                    $http({
+                        method: 'DELETE',
+                        url: getUrl(params)
+                    }).then(successCallback, function(error) {
+                        errorCallback(fromServerError(error));
+                    });
+                },
+
+                createAvatar: function(params, successCallback, errorCallback, progressCallback) {
+                    return $upload.http({
+                        url: this.getAvatarPostUrl(params.params, params.name),
+                        headers: { 'Content-Type': params.type },
+                        data: params.data
+                    }, 
+                    function(data) {
+                        if(successCallback != null) {
+                            successCallback(fromServerFormat(data));
+                        }
+                    }, 
+                    function(error) {
+                        errorCallback(fromServerError(error));
+                    }, progressCallback);
+                },
+
+                createAvatarByUrl: function(url, successCallback, errorCallback) {
+                    return $http['post'](url)
+                         .success(function (data) {
+                            if(successCallback != null) {
+                                successCallback(fromServerFormat(data));
+                            }
+                         })
+                         .error(function (error) {
+                             errorCallback(fromServerError(error));
+                         });
+                }
+
+            };
+        }];
+    });
+})();
+
 /**
  * @file PipData API
  * @copyright Digital Living Software Corp. 2014-2016
@@ -1014,6 +1201,105 @@
     });
 })();
 /**
+ * @file PipData Pictures API
+ * @copyright Digital Living Software Corp. 2014-2016
+ */
+
+(function () {
+    'use strict';
+
+    var thisModule = angular.module('pipDataPicture', ['pipDataConfig', 'pipDataSession', 'angularFileUpload']);
+
+    thisModule.provider('pipDataPicture', function () {
+
+        this.$get = ['$http', '$upload', 'pipDataConfig', 'pipDataSession', function ($http, $upload, pipDataConfig, pipDataSession) {
+
+            var fromServerFormat = function(picture) {
+                    return picture;
+                    // return {
+                    //     id: picture.id,
+                    //     name: picture.name,
+                    //     content_type: picture.content_type,
+                    //     length: picture.length,
+                    //     party_id: picture.party_id,
+                    //     creator_id: picture.creator_id,
+                    //     created: picture.created,
+                    //     refs: picture.refs,
+                    //     url: picture.url
+                    // }
+            }, 
+            fromServerError = function(error) {
+                    // TODO: add mapping for demonstration of fields
+                    return error;
+            };
+
+            return {
+
+                getPictureUrl: function(id) {
+                    var userId = pipDataSession.userId(),
+                        partyId = pipDataSession.partyId() || userId
+
+                    return pipDataConfig.serverUrl() + '/api/parties/' + partyId + '/files/' + id;
+                },
+
+
+                getPicturePostUrl: function(filter) {
+                    var userId = pipDataSession.userId(),
+                        partyId = pipDataSession.partyId() || userId
+
+                    return pipDataConfig.serverUrl() + '/api/parties/' + partyId + '/files/?name=' + filter;
+                },
+
+                getPictureContentUrl: function(id) {
+                    var userId = pipDataSession.userId(),
+                        partyId = pipDataSession.partyId() || userId
+
+                    return pipDataConfig.serverUrl() + '/api/parties/' + partyId + '/files/' + id + '/content';
+                },
+
+                deletePicture: function(id, successCallback, errorCallback) {
+                    $http({
+                        method: 'DELETE',
+                        url: getPictureUrl(id)
+                    }).then(successCallback, function(error) {
+                        errorCallback(fromServerError(error));
+                    });
+                },
+
+                createPicture: function(params, successCallback, errorCallback, progressCallback) {
+                    return $upload.http({
+                        url: this.getPicturePostUrl(params.name),
+                        headers: { 'Content-Type': params.type },
+                        data: params.data
+                    }, 
+                    function(data) {
+                        if(successCallback != null) {
+                            successCallback(fromServerFormat(data));
+                        }
+                    }, 
+                    function(error) {
+                        errorCallback(fromServerError(error));
+                    }, progressCallback)
+                },
+
+                createPictureByUrl: function(url, successCallback, errorCallback) {
+                    return $http['post'](url)
+                         .success(function (data) {
+                            if(successCallback != null) {
+                                successCallback(fromServerFormat(data));
+                            }
+                         })
+                         .error(function (error) {
+                             errorCallback(fromServerError(error));
+                         });
+                }
+
+            };
+        }];
+    });
+})();
+
+/**
  * @file PipData API
  * @copyright Digital Living Software Corp. 2014-2016
  */
@@ -1503,70 +1789,23 @@
 })();
 
 /**
- * @file Users data model
+ * @file Registration of data services
+ * @copyright Digital Living Software Corp. 2014-2016
+ */
+/* global angular */
+// (function () {
+//     'use strict';
+//     angular.module('pipSupport', [
+//         'pipFeedback',
+//         'pipAnalytics'
+//     ]);
+// })(); 
+
+/**
+ * @file Registration of support all pages
  * @copyright Digital Living Software Corp. 2014-2016
  */
 
-/* global angular */
-
-(function () {
-    'use strict';
-
-    var thisModule = angular.module('pipUsersData', ['pipRest']);
-
-    thisModule.provider('pipUsersData', function () {
 
 
-
-        // CRUD operations and other business methods
-        this.$get = ['pipRest', '$stateParams', 'pipDataModel', function (pipRest, $stateParams, pipDataModel) {   
-            return {
-                partyId: pipRest.partyId,
-
-                readUsers: function (params, transaction, successCallback, errorCallback) {
-                    return pipRest.users().page(
-                        {
-                            party_id: pipRest.partyId($stateParams),
-                            paging: 1,
-                            skip: params.start || params.item.skip || 0,
-                            search: params.item.search ,
-                            active: params.item.active,
-                            paid: params.item.paid,
-                            admin: params.item.admin,
-                            take: 15
-                        },
-                        function (pagedUsers) {
-                            if (successCallback) successCallback(pagedUsers);
-                        },
-                        function (error) {
-                            errorCallback(error);
-                        }
-                    );
-                },
-
-                readUser: function (params, successCallback, errorCallback) {
-                    params.resource = 'users';
-                    params.item = params.item || {};
-                    params.item.party_id = pipRest.partyId($stateParams);
-                    params.item.id = params.item.id || $stateParams.id;
-                    return pipDataModel.readOne(params, successCallback, errorCallback);
-                },
-                
-                updateUser: function (item, transaction, successCallback, errorCallback) {
-                    pipRest.users().update(
-                        item.item,
-                        function (updatedItem) {
-                            if (successCallback) successCallback(updatedItem);
-                        },
-                        function (error) {
-                            errorCallback(error);
-                        }
-                    );
-                }
-
-            }
-        }];
-    });
-
-})();
 //# sourceMappingURL=pip-webui-data.js.map

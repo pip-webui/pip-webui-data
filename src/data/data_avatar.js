@@ -10,7 +10,7 @@
 
     thisModule.provider('pipDataAvatar', function () {
 
-        this.$get = function ($http, $upload, pipDataConfig, pipDataSession) {
+        this.$get = function ($http, $upload, pipDataConfig, pipDataSession, pipStrings) {
 
             var
                 colorClasses = [
@@ -108,14 +108,14 @@
                                     + '&obj_id=' + params.id + noRedirect;
                             }
                         } else if (params.partyId && params.partyName) {
-                            colorClassIndex = pipStrings.hashCode(partyId) % colors.length;
+                            colorClassIndex = pipStrings.hashCode(params.partyId) % colors.length;
                             chr = (params.partyName[0] || '?').toUpperCase();
                             if (!params.noDefault) {
                                 default_template = 'default_template=letter&bg=' + colors[colorClassIndex] + '&fg=white&chr=' + chr + '&';
                             }
                             url = getUrl(params) + '?' + default_template + 'timestamp=' + timestamp + '&obj_id=' + params.partyId + noRedirect;
                         } else if (params.partyId && (!params.type && !params.id)) {
-                            url =getUrl(params) + '?timestamp=' + timestamp + '&obj_id=' + params.partyId + noRedirect;
+                            url = getUrl(params) + '?timestamp=' + timestamp + '&obj_id=' + params.partyId + noRedirect;
                         }
                     }
 
