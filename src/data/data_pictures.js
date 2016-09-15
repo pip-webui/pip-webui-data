@@ -40,6 +40,7 @@
                     return pipDataConfig.serverUrl() + '/api/parties/' + partyId + '/files/' + id;
                 },
 
+
                 getPicturePostUrl: function(filter) {
                     var userId = pipDataSession.userId(),
                         partyId = pipDataSession.partyId() || userId
@@ -77,7 +78,20 @@
                     function(error) {
                         errorCallback(fromServerError(error));
                     }, progressCallback)
+                },
+
+                createPictureByUrl: function(url, successCallback, errorCallback) {
+                    return $http['post'](url)
+                         .success(function (data) {
+                            if(successCallback != null) {
+                                successCallback(fromServerFormat(data));
+                            }
+                         })
+                         .error(function (error) {
+                             errorCallback(fromServerError(error));
+                         });
                 }
+
             };
         };
     });
