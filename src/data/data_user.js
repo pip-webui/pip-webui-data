@@ -97,23 +97,39 @@
                     });
                 },
 
-                changePassword: function () {
+                changePassword: function (params, successCallback, errorCallback) {
                     // TODO
-                    return pipRest.changePassword();
-                },
-
-                requestEmailVerification: function () {
-                    return pipRest.requestEmailVerification();
-                },
-
-                verifyEmail: function (params, successCallback, errorCallback) {
-                    return pipRest.verifyEmail(params.serverUrl).call({
-                        email: params.email,
-                        code: params.code
-                    }, successCallback,
+                    return pipRest.changePassword().call(
+                    params,
+                    successCallback,
                     function(error) {
                         errorCallback(fromServerError(error));
                     });
+                },
+
+                requestEmailVerification: function (params, successCallback, errorCallback) {
+                    return pipRest.requestEmailVerification().get(
+                        {
+                            party_id: pipRest.partyId($stateParams)
+                        },
+                        successCallback, 
+                        function(error) {
+                            errorCallback(fromServerError(error));
+                        }
+                    );      
+                },
+
+                verifyEmail: function (params, successCallback, errorCallback) {
+                    return pipRest.verifyEmail(params.serverUrl).call(
+                        {
+                            email: params.email,
+                            code: params.code
+                        }, 
+                        successCallback,
+                        function(error) {
+                            errorCallback(fromServerError(error));
+                        }
+                    );
                 },
 
                 signupValidate: function (params, successCallback, errorCallback) {
@@ -161,14 +177,14 @@
                     return pipDataModel.readOne(params, successCallback, errorCallback);
                 },
                 
-                updateUser: function (item, transaction, successCallback, errorCallback) {
+                updateUser: function (params, successCallback, errorCallback) {
                     pipRest.users().update(
-                        item.item,
-                        function (updatedItem) {
-                            if (successCallback) successCallback(updatedItem);
+                        params.item,
+                        function(user) {
+                            successCallback(fromServerFormat(user));
                         },
-                        function (error) {
-                            errorCallback(error);
+                        function(error) {
+                            errorCallback(fromServerError(error));
                         }
                     );
                 }

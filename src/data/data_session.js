@@ -10,7 +10,20 @@
 
     thisModule.provider('pipDataSession', function () {
 
-        this.$get = function (pipRest, pipSession, pipDataConfig) {
+
+        this.readSessionsResolver = /* @ngInject */
+            function ($stateParams, pipRest) {
+                return pipRest.userSessions().query({
+                    party_id: pipRest.partyId($stateParams)
+                }).$promise;
+            };                
+
+        this.readSessionIdResolver = /* @ngInject */
+            function ($stateParams, pipRest) {
+                return pipRest.sessionId();
+            };
+                  
+        this.$get = function (pipRest, pipSession, pipDataConfig, $stateParams) {
 
                 var fromServerUserFormat = function(user) {
                     // TODO: add mapping for demonstration of fields
@@ -26,7 +39,7 @@
                     // TODO: add mapping for demonstration of fields
                     return error;
                 }; 
-                
+          
             return {
 
                 signin: function (params, successCallback, errorCallback) {
@@ -67,9 +80,24 @@
                     return pipRest.sessionId();
                 },
                 
-                partyId: function ($stateParams) {
-                    return pipRest.partyId();
-                },                                                    
+                partyId: function () {
+                    return pipRest.partyId($stateParams);
+                },  
+
+                // add from user_settings_data
+                removeSession: function (params, successCallback, errorCallback) {
+                    pipRest.userSessions().remove(
+                        {
+                            id: params.session.id,
+                            party_id: pipRest.partyId($stateParams)
+                        },
+                        successCallback,
+                        function(error) {
+                            errorCallback(fromServerError(error));
+                        } 
+                    );
+                },
+
             };
         };
     });
