@@ -33,43 +33,51 @@
 
             return {
 
-                getPictureUrl: function(id) {
+                getPictureUrl: getPictureUrl,
+                getPicturePostUrl: getPicturePostUrl,
+                getPictureContentUrl: getPictureContentUrl,
+                deletePicture: deletePicture,
+                createPicture: createPicture,
+                createPictureByUrl: createPictureByUrl
+
+            }
+
+                function getPictureUrl(id) {
                     var userId = pipDataSession.userId(),
                         partyId = pipDataSession.partyId() || userId
 
                     return pipDataConfig.serverUrl() + '/api/parties/' + partyId + '/files/' + id;
-                },
+                }
 
-
-                getPicturePostUrl: function(filter) {
+                function getPicturePostUrl(filter) {
                     var userId = pipDataSession.userId(),
                         partyId = pipDataSession.partyId() || userId
 
-                    return pipDataConfig.serverUrl() + '/api/parties/' + partyId + '/files/?name=' + filter;
-                },
+                    return pipDataConfig.serverUrl() + '/api/parties/' + partyId + '/files?name=' + filter;
+                }
 
-                getPictureContentUrl: function(id) {
+                function getPictureContentUrl(id) {
                     var userId = pipDataSession.userId(),
                         partyId = pipDataSession.partyId() || userId
 
                     return pipDataConfig.serverUrl() + '/api/parties/' + partyId + '/files/' + id + '/content';
-                },
+                }
 
-                deletePicture: function(id, successCallback, errorCallback) {
+                function deletePicture(id, successCallback, errorCallback) {
                     $http({
                         method: 'DELETE',
                         url: getPictureUrl(id)
                     }).then(successCallback, function(error) {
                         errorCallback(fromServerError(error));
                     });
-                },
+                }
 
-                createPicture: function(params, successCallback, errorCallback, progressCallback) {
+                function createPicture(params, successCallback, errorCallback, progressCallback) {
                     return $upload.http({
-                        url: this.getPicturePostUrl(params.name),
+                        url: getPicturePostUrl(params.name),
                         headers: { 'Content-Type': params.type },
                         data: params.data
-                    }, 
+                    }).then( 
                     function(data) {
                         if(successCallback != null) {
                             successCallback(fromServerFormat(data));
@@ -77,10 +85,10 @@
                     }, 
                     function(error) {
                         errorCallback(fromServerError(error));
-                    }, progressCallback)
-                },
+                    }, progressCallback);
+                }
 
-                createPictureByUrl: function(url, successCallback, errorCallback) {
+                function createPictureByUrl(url, successCallback, errorCallback) {
                     return $http['post'](url)
                          .success(function (data) {
                             if(successCallback != null) {
@@ -92,7 +100,6 @@
                          });
                 }
 
-            };
         };
     });
 })();

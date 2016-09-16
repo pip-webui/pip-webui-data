@@ -44,7 +44,7 @@
                     var userId = pipDataSession.userId(),
                         partyId = pipDataSession.partyId() || userId
 
-                    return pipDataConfig.serverUrl() + '/api/parties/' + partyId + '/files/?name=' + filter;
+                    return pipDataConfig.serverUrl() + '/api/parties/' + partyId + '/files?name=' + filter;
                 },
 
                 getDocumentContentUrl: function(id) {
@@ -68,7 +68,7 @@
                         url: this.getDocumentPostUrl(params.name),
                         headers: { 'Content-Type': params.type },
                         data: params.data
-                    }, 
+                    }).then( 
                     function(data) {
                         if(successCallback != null) {
                             successCallback(fromServerFormat(data));
@@ -76,7 +76,7 @@
                     }, 
                     function(error) {
                         errorCallback(fromServerError(error));
-                    }, progressCallback)
+                    }, progressCallback);
                 }
             };
         };

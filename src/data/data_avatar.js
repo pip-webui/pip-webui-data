@@ -155,7 +155,7 @@
                         url: this.getAvatarPostUrl(params.params, params.name),
                         headers: { 'Content-Type': params.type },
                         data: params.data
-                    }, 
+                    }).then( 
                     function(data) {
                         if(successCallback != null) {
                             successCallback(fromServerFormat(data));
