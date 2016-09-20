@@ -108,9 +108,10 @@
                 },
 
                 requestEmailVerification: function (params, successCallback, errorCallback) {
-                    return pipRest.requestEmailVerification().get(
+                    return pipRest.requestEmailVerification(params.serverUrl).get(
                         {
-                            party_id: pipRest.partyId($stateParams)
+                            party_id: pipRest.partyId($stateParams),
+                            email: params.email
                         },
                         successCallback, 
                         function(error) {
