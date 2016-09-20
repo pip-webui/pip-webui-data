@@ -41,6 +41,366 @@
 })(window.angular);
 
 /**
+ * @file Announces data cache
+ * @copyright Digital Living Software Corp. 2014-2016
+ */
+
+/* global angular */
+
+(function () {
+    'use strict';
+
+    var thisModule = angular.module('pipCacheAnnouncement', ['pipDataAnnouncement']);
+
+    thisModule.service('pipCacheAnnouncement',
+        ['pipEnums', 'pipDataCache', 'pipCacheTag', function (pipEnums, pipDataCache, pipCacheTag) {
+
+            return {
+                readAnnounces: readAnnounces,
+                onAnnounceCreate: onAnnounceCreate,
+                onAnnounceUpdate: onAnnounceUpdate,
+                onAnnounceDelete: onAnnounceDelete                
+            };
+
+            function readAnnounces(params, successCallback, errorCallback) {
+                params = params || {};
+                params.resource = 'announces';
+                params.item = params.item || {};
+
+                return pipDataCache.retrieveOrLoad(params, successCallback, errorCallback);
+            }
+            
+            function onAnnounceCreate(params, successCallback) {
+                return pipDataCache.addDecorator(
+                    'announces', params,
+                    pipCacheTag.tagsUpdateDecorator(params, successCallback)
+                );
+            }
+
+            function onAnnounceUpdate(params, successCallback) {
+                return pipDataCache.updateDecorator(
+                    'announces', params,
+                    pipCacheTag.tagsUpdateDecorator(params, successCallback)
+                );
+            }
+
+            function onAnnounceDelete(params, successCallback) {
+                return pipDataCache.removeDecorator('announces', params, successCallback);
+            }
+                        
+        }]
+    );
+
+})();
+
+
+/**
+ * @file Feedbacks data cache
+ * @copyright Digital Living Software Corp. 2014-2016
+ */
+
+/* global angular */
+
+(function () {
+    'use strict';
+
+    var thisModule = angular.module('pipCacheFeedback', ['pipDataFeedback']);
+
+    thisModule.service('pipCacheFeedback',
+        ['pipEnums', 'pipDataCache', 'pipCacheTag', function (pipEnums, pipDataCache, pipCacheTag) {
+
+            return {
+                readFeedbacks: readFeedbacks,
+                onFeedbackCreate: onFeedbackCreate,
+                onFeedbackUpdate: onFeedbackUpdate,
+                onFeedbackDelete: onFeedbackDelete                
+            };
+
+            function readFeedbacks(params, successCallback, errorCallback) {
+                params = params || {};
+                params.resource = 'feedbacks';
+                params.item = params.item || {};
+
+                return pipDataCache.retrieveOrLoad(params, successCallback, errorCallback);
+            };
+            
+            function onFeedbackCreate(params, successCallback) {
+                return pipDataCache.addDecorator(
+                    'feedbacks', params,
+                    pipCacheTag.tagsUpdateDecorator(params, successCallback)
+                );
+            };
+
+            function onFeedbackUpdate(params, successCallback) {
+                return pipDataCache.updateDecorator(
+                    'feedbacks', params,
+                    pipCacheTag.tagsUpdateDecorator(params, successCallback)
+                );
+            };
+
+            function onFeedbackDelete(params, successCallback) {
+                return pipDataCache.removeDecorator('feedbacks', params, successCallback);
+            };
+                        
+        }]
+    );
+
+})();
+
+
+/**
+ * @file Guides data cache
+ * @copyright Digital Living Software Corp. 2014-2016
+ */
+
+/* global angular */
+
+(function () {
+    'use strict';
+
+    var thisModule = angular.module('pipCacheGuide', ['pipDataGuide', 'pipCacheTag']);
+
+    thisModule.service('pipCacheGuide',
+        ['pipEnums', 'pipDataCache', 'pipCacheTag', function (pipEnums, pipDataCache, pipCacheTag) {
+
+            return {
+                readGuides: readGuides,
+                onGuideCreate: onGuideCreate,
+                onGuideUpdate: onGuideUpdate,
+                onGuideDelete: onGuideDelete                
+            };
+
+            function readGuides(params, successCallback, errorCallback) {
+                params = params || {};
+                params.resource = 'guides';
+                params.item = params.item || {};
+
+                return pipDataCache.retrieveOrLoad(params, successCallback, errorCallback);
+            };
+            
+            function onGuideCreate(params, successCallback) {
+                return pipDataCache.addDecorator(
+                    'guides', params,
+                    pipCacheTag.tagsUpdateDecorator(params, successCallback)
+                );
+            };
+
+            function onGuideUpdate(params, successCallback) {
+                return pipDataCache.updateDecorator(
+                    'guides', params,
+                    pipCacheTag.tagsUpdateDecorator(params, successCallback)
+                );
+            };
+
+            function onGuideDelete(params, successCallback) {
+                return pipDataCache.removeDecorator('guides', params, successCallback);
+            };
+                        
+        }]
+    );
+
+})();
+
+
+/**
+ * @file ImageSets data cache
+ * @copyright Digital Living Software Corp. 2014-2016
+ */
+
+/* global angular */
+
+(function () {
+    'use strict';
+
+    var thisModule = angular.module('pipCacheImageSet', ['pipDataImageSets']);
+
+    thisModule.service('pipCacheImageSet',
+        ['pipEnums', 'pipDataCache', 'pipCacheTag', function (pipEnums, pipDataCache, pipCacheTag) {
+
+            return {
+                readImageSets: readImageSets,
+                onImageSetCreate: onImageSetCreate,
+                onImageSetUpdate: onImageSetUpdate,
+                onImageSetDelete: onImageSetDelete                
+            };
+
+            function readImageSets(params, successCallback, errorCallback) {
+                params = params || {};
+                params.resource = 'image_sets';
+                params.item = params.item || {};
+
+                return pipDataCache.retrieveOrLoad(params, successCallback, errorCallback);
+            };
+            
+            function onImageSetCreate(params, successCallback) {
+                return pipDataCache.addDecorator(
+                    'image_sets', params,
+                    pipCacheTag.tagsUpdateDecorator(params, successCallback)
+                );
+            };
+
+            function onImageSetUpdate(params, successCallback) {
+                return pipDataCache.updateDecorator(
+                    'image_sets', params,
+                    pipCacheTag.tagsUpdateDecorator(params, successCallback)
+                );
+            };
+
+            function onImageSetDelete(params, successCallback) {
+                return pipDataCache.removeDecorator('image_sets', params, successCallback);
+            };
+                        
+        }]
+    );
+
+})();
+
+
+/**
+ * @file Tags data cache
+ * @copyright Digital Living Software Corp. 2014-2016
+ */
+
+/* global angular */
+
+(function () {
+    'use strict';
+
+    var thisModule = angular.module('pipCacheTag', ['pipUtils', 'pipDataCache']);
+
+    thisModule.service('pipCacheTag',
+        ['pipTags', 'pipDataCache', function(pipTags, pipDataCache) {
+            return {
+                readTags: readTags,
+                // Todo: Add updateTags method
+                onTagsUpdate: onTagsUpdate,
+                tagsUpdateDecorator: tagsUpdateDecorator
+            };
+			//------------------------------
+
+            function tagsUpdate(params, item) {
+                // Extract tag from updated entity
+                var tags = item ? pipTags.extractTags(item) : [];
+                if (tags.length == 0) return;
+
+                var cacheName = 'partyTags';
+                if (params && params.party_id !== null && params.party_id !== undefined)
+                    cacheName = cacheName + '_' + params.party_id;
+                else if (params && params.item && params.item.party_id !== null && params.item.party_id !== undefined)
+                    cacheName = cacheName + '_' + params.item.party_id;
+
+                // Todo: this is a wrong way to get party_id (contributor) from entities
+                var data = pipDataCache.retrieve(cacheName);
+
+                // If tags are stored
+                if (data) {
+                    _.each(tags, function(tag) {
+                        // Find if tag already exists
+                        var t = _.find(data.tags, function(t) {
+                            return pipTags.equalTags(t.tag, tag);
+                        });
+
+                        // Otherwise add a new tag
+                        if (t) {
+                            t.tag = tag;
+                            t.count = t.count + 1;
+                            t.used = new Date();
+                        } else {
+                            if (!data.tags)
+                                data.tags = [];
+								
+                            data.tags.push({
+                                tag: tag,
+                                count: 1,
+                                used: new Date()
+                            });
+                        }
+                    });
+                    pipDataCache.store(cacheName, data);
+                }
+            };
+
+            function tagsUpdateDecorator(params, successCallback) {
+                return function(item) {
+                    tagsUpdate(params, item);
+
+                    if (successCallback) successCallback(item);
+                };
+            };
+
+			function readTags(params, successCallback, errorCallback) {
+				params.resource = 'partyTags';
+				params.singleResult = true;
+
+				return pipDataCache.retrieveOrLoad(params, successCallback, errorCallback);
+			};
+
+			// Todo: Add updateTags method
+
+			function onTagsUpdate(params, successCallback) {
+				return tagsUpdateDecorator(params, successCallback);
+			};
+        }]
+    );
+
+})();
+
+
+/**
+ * @file Tips data cache
+ * @copyright Digital Living Software Corp. 2014-2016
+ */
+
+/* global angular */
+
+(function () {
+    'use strict';
+
+    var thisModule = angular.module('pipCacheTip', ['pipDataTip']);
+
+    thisModule.service('pipCacheTip',
+        ['pipEnums', 'pipDataCache', 'pipCacheTag', function (pipEnums, pipDataCache, pipCacheTag) {
+
+            return {
+                readTips: readTips,
+                onTipCreate: onTipCreate,
+                onTipUpdate: onTipUpdate,
+                onTipDelete: onTipDelete                
+            };
+
+            function readTips(params, successCallback, errorCallback) {
+                params = params || {};
+                params.resource = 'tips';
+                params.item = params.item || {};
+
+                return pipDataCache.retrieveOrLoad(params, successCallback, errorCallback);
+            };
+            
+            function onTipCreate(params, successCallback) {
+                return pipDataCache.addDecorator(
+                    'tips', params,
+                    pipCacheTag.tagsUpdateDecorator(params, successCallback)
+                );
+            };
+
+            function onTipUpdate(params, successCallback) {
+                return pipDataCache.updateDecorator(
+                    'tips', params,
+                    pipCacheTag.tagsUpdateDecorator(params, successCallback)
+                );
+            };
+
+            function onTipDelete(params, successCallback) {
+                return pipDataCache.removeDecorator('tips', params, successCallback);
+            };
+                        
+        }]
+    );
+
+})();
+
+
+/**
  * @file Announces data model
  * @copyright Digital Living Software Corp. 2014-2016
  */
@@ -787,20 +1147,45 @@
 (function () {
     'use strict';
 
-    var thisModule = angular.module('pipDataParty', ['pipDataConfig', 'pipRest']);
+    var thisModule = angular.module('pipDataParty', ['pipDataConfig', 'pipRest', 'pipDataSession']);
 
     thisModule.provider('pipDataParty', function () {
+
+        this.readPartiesResolver = function () {
+            return /* @ngInject */ ['$rootScope', '$stateParams', 'pipRest', 'pipDataSession', function ($rootScope, $stateParams, pipRest, pipDataSession) {
+                            var userId = pipDataSession.userId();
+                            var partyId = $stateParams.party_id || userId;
+
+                            if (partyId != userId)
+                                throw('ERROR_NOT_ALLOWED');
+                            return pipRest.parties().get({ id: partyId }).$promise;
+                        }]
+        }
 
         this.$get = ['pipRest', 'pipDataConfig', function (pipRest, pipDataConfig) {
 
            var fromServerFormat = function(party) {
-                    // TODO: add mapping for demonstration of fields
                     return party;
+                    // return {
+                    //     name: party.name,
+                    //     email: party.email,
+                    //     type: party.type,
+                    //     join: party.join,
+                    //     updated: party.updated,
+                    //     id: party.id
+                    // }
                 },
 
                 toServerFormat = function(party) {
-                    // TODO: add mapping for demonstration of fields
                     return party;
+                    // return {
+                    //     name: party.name,
+                    //     email: party.email,
+                    //     type: party.type,
+                    //     join: party.join,
+                    //     updated: party.updated,
+                    //     id: party.id
+                    // }                    
                 },
 
                 fromServerError = function(error) {
@@ -809,10 +1194,11 @@
                 };
 
             return {
-
-                getParty: function(id) {
-                    // TODO
-
+                readParty: function(id) {
+                    params.resource = 'parties';
+                    params.item = params.item || {};
+                    params.item.id = pipRest.partyId($stateParams);
+                    return pipDataModel.readOne(params, successCallback, errorCallback);
                 },
 
                 createParty: function(data, successCallback, errorCallback) {
@@ -1478,366 +1864,6 @@
         }];
     });
 })();
-
-/**
- * @file Announces data cache
- * @copyright Digital Living Software Corp. 2014-2016
- */
-
-/* global angular */
-
-(function () {
-    'use strict';
-
-    var thisModule = angular.module('pipCacheAnnouncement', ['pipDataAnnouncement']);
-
-    thisModule.service('pipCacheAnnouncement',
-        ['pipEnums', 'pipDataCache', 'pipCacheTag', function (pipEnums, pipDataCache, pipCacheTag) {
-
-            return {
-                readAnnounces: readAnnounces,
-                onAnnounceCreate: onAnnounceCreate,
-                onAnnounceUpdate: onAnnounceUpdate,
-                onAnnounceDelete: onAnnounceDelete                
-            };
-
-            function readAnnounces(params, successCallback, errorCallback) {
-                params = params || {};
-                params.resource = 'announces';
-                params.item = params.item || {};
-
-                return pipDataCache.retrieveOrLoad(params, successCallback, errorCallback);
-            }
-            
-            function onAnnounceCreate(params, successCallback) {
-                return pipDataCache.addDecorator(
-                    'announces', params,
-                    pipCacheTag.tagsUpdateDecorator(params, successCallback)
-                );
-            }
-
-            function onAnnounceUpdate(params, successCallback) {
-                return pipDataCache.updateDecorator(
-                    'announces', params,
-                    pipCacheTag.tagsUpdateDecorator(params, successCallback)
-                );
-            }
-
-            function onAnnounceDelete(params, successCallback) {
-                return pipDataCache.removeDecorator('announces', params, successCallback);
-            }
-                        
-        }]
-    );
-
-})();
-
-
-/**
- * @file Feedbacks data cache
- * @copyright Digital Living Software Corp. 2014-2016
- */
-
-/* global angular */
-
-(function () {
-    'use strict';
-
-    var thisModule = angular.module('pipCacheFeedback', ['pipDataFeedback']);
-
-    thisModule.service('pipCacheFeedback',
-        ['pipEnums', 'pipDataCache', 'pipCacheTag', function (pipEnums, pipDataCache, pipCacheTag) {
-
-            return {
-                readFeedbacks: readFeedbacks,
-                onFeedbackCreate: onFeedbackCreate,
-                onFeedbackUpdate: onFeedbackUpdate,
-                onFeedbackDelete: onFeedbackDelete                
-            };
-
-            function readFeedbacks(params, successCallback, errorCallback) {
-                params = params || {};
-                params.resource = 'feedbacks';
-                params.item = params.item || {};
-
-                return pipDataCache.retrieveOrLoad(params, successCallback, errorCallback);
-            };
-            
-            function onFeedbackCreate(params, successCallback) {
-                return pipDataCache.addDecorator(
-                    'feedbacks', params,
-                    pipCacheTag.tagsUpdateDecorator(params, successCallback)
-                );
-            };
-
-            function onFeedbackUpdate(params, successCallback) {
-                return pipDataCache.updateDecorator(
-                    'feedbacks', params,
-                    pipCacheTag.tagsUpdateDecorator(params, successCallback)
-                );
-            };
-
-            function onFeedbackDelete(params, successCallback) {
-                return pipDataCache.removeDecorator('feedbacks', params, successCallback);
-            };
-                        
-        }]
-    );
-
-})();
-
-
-/**
- * @file Guides data cache
- * @copyright Digital Living Software Corp. 2014-2016
- */
-
-/* global angular */
-
-(function () {
-    'use strict';
-
-    var thisModule = angular.module('pipCacheGuide', ['pipDataGuide', 'pipCacheTag']);
-
-    thisModule.service('pipCacheGuide',
-        ['pipEnums', 'pipDataCache', 'pipCacheTag', function (pipEnums, pipDataCache, pipCacheTag) {
-
-            return {
-                readGuides: readGuides,
-                onGuideCreate: onGuideCreate,
-                onGuideUpdate: onGuideUpdate,
-                onGuideDelete: onGuideDelete                
-            };
-
-            function readGuides(params, successCallback, errorCallback) {
-                params = params || {};
-                params.resource = 'guides';
-                params.item = params.item || {};
-
-                return pipDataCache.retrieveOrLoad(params, successCallback, errorCallback);
-            };
-            
-            function onGuideCreate(params, successCallback) {
-                return pipDataCache.addDecorator(
-                    'guides', params,
-                    pipCacheTag.tagsUpdateDecorator(params, successCallback)
-                );
-            };
-
-            function onGuideUpdate(params, successCallback) {
-                return pipDataCache.updateDecorator(
-                    'guides', params,
-                    pipCacheTag.tagsUpdateDecorator(params, successCallback)
-                );
-            };
-
-            function onGuideDelete(params, successCallback) {
-                return pipDataCache.removeDecorator('guides', params, successCallback);
-            };
-                        
-        }]
-    );
-
-})();
-
-
-/**
- * @file ImageSets data cache
- * @copyright Digital Living Software Corp. 2014-2016
- */
-
-/* global angular */
-
-(function () {
-    'use strict';
-
-    var thisModule = angular.module('pipCacheImageSet', ['pipDataImageSets']);
-
-    thisModule.service('pipCacheImageSet',
-        ['pipEnums', 'pipDataCache', 'pipCacheTag', function (pipEnums, pipDataCache, pipCacheTag) {
-
-            return {
-                readImageSets: readImageSets,
-                onImageSetCreate: onImageSetCreate,
-                onImageSetUpdate: onImageSetUpdate,
-                onImageSetDelete: onImageSetDelete                
-            };
-
-            function readImageSets(params, successCallback, errorCallback) {
-                params = params || {};
-                params.resource = 'image_sets';
-                params.item = params.item || {};
-
-                return pipDataCache.retrieveOrLoad(params, successCallback, errorCallback);
-            };
-            
-            function onImageSetCreate(params, successCallback) {
-                return pipDataCache.addDecorator(
-                    'image_sets', params,
-                    pipCacheTag.tagsUpdateDecorator(params, successCallback)
-                );
-            };
-
-            function onImageSetUpdate(params, successCallback) {
-                return pipDataCache.updateDecorator(
-                    'image_sets', params,
-                    pipCacheTag.tagsUpdateDecorator(params, successCallback)
-                );
-            };
-
-            function onImageSetDelete(params, successCallback) {
-                return pipDataCache.removeDecorator('image_sets', params, successCallback);
-            };
-                        
-        }]
-    );
-
-})();
-
-
-/**
- * @file Tags data cache
- * @copyright Digital Living Software Corp. 2014-2016
- */
-
-/* global angular */
-
-(function () {
-    'use strict';
-
-    var thisModule = angular.module('pipCacheTag', ['pipUtils', 'pipDataCache']);
-
-    thisModule.service('pipCacheTag',
-        ['pipTags', 'pipDataCache', function(pipTags, pipDataCache) {
-            return {
-                readTags: readTags,
-                // Todo: Add updateTags method
-                onTagsUpdate: onTagsUpdate,
-                tagsUpdateDecorator: tagsUpdateDecorator
-            };
-			//------------------------------
-
-            function tagsUpdate(params, item) {
-                // Extract tag from updated entity
-                var tags = item ? pipTags.extractTags(item) : [];
-                if (tags.length == 0) return;
-
-                var cacheName = 'partyTags';
-                if (params && params.party_id !== null && params.party_id !== undefined)
-                    cacheName = cacheName + '_' + params.party_id;
-                else if (params && params.item && params.item.party_id !== null && params.item.party_id !== undefined)
-                    cacheName = cacheName + '_' + params.item.party_id;
-
-                // Todo: this is a wrong way to get party_id (contributor) from entities
-                var data = pipDataCache.retrieve(cacheName);
-
-                // If tags are stored
-                if (data) {
-                    _.each(tags, function(tag) {
-                        // Find if tag already exists
-                        var t = _.find(data.tags, function(t) {
-                            return pipTags.equalTags(t.tag, tag);
-                        });
-
-                        // Otherwise add a new tag
-                        if (t) {
-                            t.tag = tag;
-                            t.count = t.count + 1;
-                            t.used = new Date();
-                        } else {
-                            if (!data.tags)
-                                data.tags = [];
-								
-                            data.tags.push({
-                                tag: tag,
-                                count: 1,
-                                used: new Date()
-                            });
-                        }
-                    });
-                    pipDataCache.store(cacheName, data);
-                }
-            };
-
-            function tagsUpdateDecorator(params, successCallback) {
-                return function(item) {
-                    tagsUpdate(params, item);
-
-                    if (successCallback) successCallback(item);
-                };
-            };
-
-			function readTags(params, successCallback, errorCallback) {
-				params.resource = 'partyTags';
-				params.singleResult = true;
-
-				return pipDataCache.retrieveOrLoad(params, successCallback, errorCallback);
-			};
-
-			// Todo: Add updateTags method
-
-			function onTagsUpdate(params, successCallback) {
-				return tagsUpdateDecorator(params, successCallback);
-			};
-        }]
-    );
-
-})();
-
-
-/**
- * @file Tips data cache
- * @copyright Digital Living Software Corp. 2014-2016
- */
-
-/* global angular */
-
-(function () {
-    'use strict';
-
-    var thisModule = angular.module('pipCacheTip', ['pipDataTip']);
-
-    thisModule.service('pipCacheTip',
-        ['pipEnums', 'pipDataCache', 'pipCacheTag', function (pipEnums, pipDataCache, pipCacheTag) {
-
-            return {
-                readTips: readTips,
-                onTipCreate: onTipCreate,
-                onTipUpdate: onTipUpdate,
-                onTipDelete: onTipDelete                
-            };
-
-            function readTips(params, successCallback, errorCallback) {
-                params = params || {};
-                params.resource = 'tips';
-                params.item = params.item || {};
-
-                return pipDataCache.retrieveOrLoad(params, successCallback, errorCallback);
-            };
-            
-            function onTipCreate(params, successCallback) {
-                return pipDataCache.addDecorator(
-                    'tips', params,
-                    pipCacheTag.tagsUpdateDecorator(params, successCallback)
-                );
-            };
-
-            function onTipUpdate(params, successCallback) {
-                return pipDataCache.updateDecorator(
-                    'tips', params,
-                    pipCacheTag.tagsUpdateDecorator(params, successCallback)
-                );
-            };
-
-            function onTipDelete(params, successCallback) {
-                return pipDataCache.removeDecorator('tips', params, successCallback);
-            };
-                        
-        }]
-    );
-
-})();
-
 
 /**
  * @file Registration of data services
